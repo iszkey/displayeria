@@ -1,6 +1,8 @@
 "use client";
 
+import CharacterNameDisplay from "@/components/CharacterNameDisplay";
 import { Character } from "@/types/character";
+import { PasteData } from "@/types/pasteData";
 import { useEffect, useState } from "react";
 
 // キャラクター情報を入力して、その情報を表示するコンポーネント
@@ -13,8 +15,8 @@ export default function Home() {
       const text = e.clipboardData?.getData("text");
       if (text) {
         try {
-          const characterData: Character = JSON.parse(text);
-          setCharacter(characterData);
+          const pasteData: PasteData = JSON.parse(text);
+          setCharacter(pasteData.data);
         } catch (error) {
           alert("入力データのフォーマットが不正です");
         }
@@ -30,5 +32,13 @@ export default function Home() {
     };
   }, []);
 
-  return <div>好きなところにペーストしてね</div>;
+  return (
+    <div>
+      {character ? (
+        <CharacterNameDisplay character={character} />
+      ) : (
+        <p>好きなところにペーストしてね</p>
+      )}
+    </div>
+  );
 }
